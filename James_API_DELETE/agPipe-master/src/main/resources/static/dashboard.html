@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <script>
+        function load() {
+            var ajax = new XMLHttpRequest();
+            try {
+                ajax.open('GET', 'https://agriculturepipeline.herokuapp.com/main/query/false', false);
+                ajax.send();
+                if(ajax.status == 200) {
+                    var json = JSON.parse(ajax.responseText);
+                    var tbody = document.getElementById("requests");
+                    for(var i = 0; i < json.length; i++) {
+                        var tr = document.createElement("tr");
+                        var th = document.createElement("th");
+                        th.scope = "row";
+                        th.innerHTML = i;
+                        tr.appendChild(th);
+                        var td1 = document.createElement("td");
+                        td1.innerHTML = json[i].n;
+                        var td2 = document.createElement("td");
+                        td2.innerHTML = json[i].p;
+                        var td3 = document.createElement("td");
+                        td3.innerHTML = json[i].k;
+                        var td4 = document.createElement("td");
+                        td4.innerHTML = json[i].pH;
+                        var td5 = document.createElement("td");
+                        td5.innerHTML = json[i].date;
+                        var td6 = document.createElement("td");
+                        td6.innerHTML = json[i].location;
+                        var td7 = document.createElement("td");
+                        td7.innerHTML = json[i].question;
+                        var td8 = document.createElement("td");
+                        var img = document.createElement("img");
+                        img.src = "data:image/png;base64," + json[i].image;
+                        img.height = 400;
+                        td8.appendChild(img);
+                        var button = document.createElement("button");
+                        button.id = json[i].id;
+                        button.onclick = function() {
+                            localStorage.setItem('farmEdQueryNum', button.id);
+                            window.location = 'sendReply.html'
+                        }
+                        button.innerHTML = "Reply";
+                        tr.appendChild(td1);
+                        tr.appendChild(td2);
+                        tr.appendChild(td3);
+                        tr.appendChild(td4);
+                        tr.appendChild(td5);
+                        tr.appendChild(td6);
+                        tr.appendChild(td7);
+                        tr.appendChild(td8);
+                        tr.appendChild(button);
+                        tbody.appendChild(tr);
+                    }
+                }
+                else {
+                    alert('loginError');
+                }
+            }
+            catch (err) {
+                alert(err);
+            }
+        }
+    </script>
+</head>
+<body onload="load()">
+        <nav class="navbar navbar-expand-lg navbar-light bg-pr">
+                <a class="navbar-brand text-white" href="#"><img src="img/PEV.png" id="navbar-img" alt=""></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+              
+              </nav>
+
+
+              <div class="flex-row">
+                  <div class="row">
+                      <div class="col-sm-1" id=one></div>
+                      <div class="col-sm-10" id=two>
+                            <table class="table table-striped">
+                                    <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">N</th>
+                                <th scope="col">P</th>
+                                <th scope="col">K</th>
+                                <th scope="col">pH</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Location</th>
+                                <th scope="col">Question</th>
+                                <th scope="col">Image</th>
+                                <th scope="col">Button</th>
+                                <th scope="col"></th>
+                            </tr>
+                            </thead>
+                                <tbody id="requests">
+                                    
+                                </tbody>
+                                  </table>
+        
+                      </div>
+                      <img src="">
+                  </div>
+                    
+    
+        <script src="js/jquery.min.js"></script>
+        <script src="js/popper.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+    </body>
+</html>
